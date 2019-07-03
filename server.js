@@ -1,9 +1,12 @@
 const express = require('express')
+const cors = require('cors')
 const mongoose = require('mongoose')
 const requireDir = require('require-dir')
 
 // iniciando o app
 const app = express() 
+app.use(express.json())
+app.use(cors())
 
 // Iniciando o DB
 mongoose.connect(
@@ -12,17 +15,7 @@ mongoose.connect(
 )
 requireDir('./src/models')
 
-const Product = mongoose.model('Product')
+//Rotas
+app.use('/api', require("./src/routes"))
 
-//primeira rota
-app.get('/', ( req , res ) => {
-    Product.create({
-        title: 'React Native',
-        description: 'fazendo app nativo ninja',
-        url: 'http://hithhub.com/facebook/react-native'
-    })
-
-    return res.send('HELLO AAAAAA')
-})
-
-app.listen(8089);
+app.listen(8080); // PORTA EM QUE ESTA HOSPEDADO
